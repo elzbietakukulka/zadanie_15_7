@@ -12,8 +12,8 @@ class StopWatch extends React.Component {
 		};
 		
 	}
-}
-	reset = () => {
+	
+	reset() {
 		this.setState({
 			times: {
 				minutes: 0,
@@ -23,7 +23,7 @@ class StopWatch extends React.Component {
 		});
 	}
 	a
-	pad0 = (value) => {
+	pad0(value) {
 		let result = value.toString();
 		const resultLength = result.length;
 		if (resultLength <2){
@@ -32,26 +32,26 @@ class StopWatch extends React.Component {
 		return result;
 	}
 	
-	format = () =>{
+	format() {
 		let minutes = this.state.times.minutes;
 		let seconds = this.state.times.seconds;
 		let miliseconds = this.state.times.miliseconds;
 		return `${this.pad0(minutes)}:${this.pad0(seconds)}:${this.pad0(Math.floor(miliseconds))}`;
 	}
 	
-	start = () =>{
+	start() {
 		if(!this.state.running){
 			this.state.running = 'true';
 			this.watch = setInterval(() => this.step(), 10);
 		}
 	}
 	
-	step = () =>{
+	step () {
 		if(!this.state.running) return;
 			this.calculate();
 	}
 	
-	calculate = () => {
+	calculate() {
 		this.setState({
 			times: {
 				minutes: this.state.times.minutes,
@@ -81,7 +81,7 @@ class StopWatch extends React.Component {
 		}
 	}
 	
-	stop = () => {
+	stop() {
 		this.setState({
 			running: false
 		});
@@ -89,12 +89,12 @@ class StopWatch extends React.Component {
 		clearInterval(this.watch);
 	}
 	
-	clear = () => {
+	clear() {
 		this.stop();
 		this.reset();
 	}
 	
-	addTime = () => {
+	addTime() {
 			let newRecord = {
 			id: this.state.history.length,
 			record: this.format()
@@ -104,11 +104,11 @@ class StopWatch extends React.Component {
 		console.log(this.state.history);
 	}
 	
-	clearHistory = () => {
+	clearHistory() {
 		this.setState({ history: [] });
 	}
 	
-	render = () => {
+	render() {
 		return (
 			<div className = {'container'}>
 				<div className = {'tab-panel active'} id = {'tab-1'}>
@@ -127,7 +127,7 @@ class StopWatch extends React.Component {
 		);
 		
 	}
-
+}
 
 
 class Display extends React.Component{
@@ -135,13 +135,13 @@ class Display extends React.Component{
 		super(props)
 	}
 	
-	static propTypes  ()  {
+	static (propTypes) {
 		time: React.PropTypes.string.isRequired
 	}
 	
 	render() {
 		return (
-		React.createElement('div', {className: 'stopWatch' }, this.props.time)
+			React.createElement('div', {className: 'stopWatch' }, this.props.time)
 		);
 	}
 }
@@ -151,7 +151,7 @@ class Results extends React.Component{
 		super(props)
 	}
 	
-	static propTypes () {
+	static (propTypes)  {
 
 		history: React.PropTypes.array.isRequired
 

@@ -31,157 +31,174 @@ var StopWatch = function (_React$Component) {
 		return _this;
 	}
 
+	_createClass(StopWatch, [{
+		key: 'reset',
+		value: function reset() {
+			this.setState({
+				times: {
+					minutes: 0,
+					seconds: 0,
+					miliseconds: 0
+				}
+			});
+		}
+	}, {
+		key: 'pad0',
+		value: function pad0(value) {
+			var result = value.toString();
+			var resultLength = result.length;
+			if (resultLength < 2) {
+				result = 0 + result;
+			}
+			return result;
+		}
+	}, {
+		key: 'format',
+		value: function format() {
+			var minutes = this.state.times.minutes;
+			var seconds = this.state.times.seconds;
+			var miliseconds = this.state.times.miliseconds;
+			return this.pad0(minutes) + ':' + this.pad0(seconds) + ':' + this.pad0(Math.floor(miliseconds));
+		}
+	}, {
+		key: 'start',
+		value: function start() {
+			var _this2 = this;
+
+			if (!this.state.running) {
+				this.state.running = 'true';
+				this.watch = setInterval(function () {
+					return _this2.step();
+				}, 10);
+			}
+		}
+	}, {
+		key: 'step',
+		value: function step() {
+			if (!this.state.running) return;
+			this.calculate();
+		}
+	}, {
+		key: 'calculate',
+		value: function calculate() {
+			this.setState({
+				times: {
+					minutes: this.state.times.minutes,
+					seconds: this.state.times.seconds,
+					miliseconds: this.state.times.miliseconds + 1
+				}
+			});
+
+			if (this.state.times.miliseconds >= 100) {
+				this.setState({
+					times: {
+						minutes: this.state.times.minutes,
+						seconds: this.state.times.seconds + 1,
+						miliseconds: 0
+					}
+				});
+			}
+
+			if (this.state.times.seconds >= 60) {
+				this.setState({
+					times: {
+						minutes: this.state.times.minutes + 1,
+						seconds: 0,
+						miliseconds: this.state.times.miliseconds
+					}
+				});
+			}
+		}
+	}, {
+		key: 'stop',
+		value: function stop() {
+			this.setState({
+				running: false
+			});
+
+			clearInterval(this.watch);
+		}
+	}, {
+		key: 'clear',
+		value: function clear() {
+			this.stop();
+			this.reset();
+		}
+	}, {
+		key: 'addTime',
+		value: function addTime() {
+			var newRecord = {
+				id: this.state.history.length,
+				record: this.format()
+			};
+
+			this.setState({ history: [].concat(_toConsumableArray(this.state.history), [newRecord]) });
+			console.log(this.state.history);
+		}
+	}, {
+		key: 'clearHistory',
+		value: function clearHistory() {
+			this.setState({ history: [] });
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this3 = this;
+
+			return React.createElement(
+				'div',
+				{ className: 'container' },
+				React.createElement(
+					'div',
+					{ className: 'tab-panel active', id: 'tab-1' },
+					React.createElement(
+						'nav',
+						null,
+						React.createElement(
+							'a',
+							{ href: '#', className: 'button', id: 'start', onClick: function onClick() {
+									return _this3.start();
+								} },
+							'start'
+						),
+						React.createElement(
+							'a',
+							{ href: '#', className: 'button', id: 'stop', onClick: function onClick() {
+									_this3.stop();
+								} },
+							'stop'
+						),
+						React.createElement(
+							'a',
+							{ href: '#', className: 'button', id: 'clear', onClick: function onClick() {
+									return _this3.clear();
+								} },
+							'Clear'
+						),
+						React.createElement(
+							'a',
+							{ href: '#', className: 'button', id: 'Add', onClick: function onClick() {
+									return _this3.addTime();
+								} },
+							'Add result'
+						),
+						React.createElement(
+							'a',
+							{ href: '#', className: 'button', id: 'clear-results', onClick: function onClick() {
+									return _this3.clearHistory();
+								} },
+							'Clear History'
+						)
+					),
+					React.createElement(Display, { time: this.format() })
+				),
+				React.createElement(Results, { history: this.state.history, className: 'tab-panel', id: 'tab-2' })
+			);
+		}
+	}]);
+
 	return StopWatch;
 }(React.Component);
-
-reset = function reset() {
-	undefined.setState({
-		times: {
-			minutes: 0,
-			seconds: 0,
-			miliseconds: 0
-		}
-	});
-};
-a;
-pad0 = function pad0(value) {
-	var result = value.toString();
-	var resultLength = result.length;
-	if (resultLength < 2) {
-		result = 0 + result;
-	}
-	return result;
-};
-
-format = function format() {
-	var minutes = undefined.state.times.minutes;
-	var seconds = undefined.state.times.seconds;
-	var miliseconds = undefined.state.times.miliseconds;
-	return undefined.pad0(minutes) + ':' + undefined.pad0(seconds) + ':' + undefined.pad0(Math.floor(miliseconds));
-};
-
-start = function start() {
-	if (!undefined.state.running) {
-		undefined.state.running = 'true';
-		undefined.watch = setInterval(function () {
-			return undefined.step();
-		}, 10);
-	}
-};
-
-step = function step() {
-	if (!undefined.state.running) return;
-	undefined.calculate();
-};
-
-calculate = function calculate() {
-	undefined.setState({
-		times: {
-			minutes: undefined.state.times.minutes,
-			seconds: undefined.state.times.seconds,
-			miliseconds: undefined.state.times.miliseconds + 1
-		}
-	});
-
-	if (undefined.state.times.miliseconds >= 100) {
-		undefined.setState({
-			times: {
-				minutes: undefined.state.times.minutes,
-				seconds: undefined.state.times.seconds + 1,
-				miliseconds: 0
-			}
-		});
-	}
-
-	if (undefined.state.times.seconds >= 60) {
-		undefined.setState({
-			times: {
-				minutes: undefined.state.times.minutes + 1,
-				seconds: 0,
-				miliseconds: undefined.state.times.miliseconds
-			}
-		});
-	}
-};
-
-stop = function stop() {
-	undefined.setState({
-		running: false
-	});
-
-	clearInterval(undefined.watch);
-};
-
-clear = function clear() {
-	undefined.stop();
-	undefined.reset();
-};
-
-addTime = function addTime() {
-	var newRecord = {
-		id: undefined.state.history.length,
-		record: undefined.format()
-	};
-
-	undefined.setState({ history: [].concat(_toConsumableArray(undefined.state.history), [newRecord]) });
-	console.log(undefined.state.history);
-};
-
-clearHistory = function clearHistory() {
-	undefined.setState({ history: [] });
-};
-
-render = function render() {
-	return React.createElement(
-		'div',
-		{ className: 'container' },
-		React.createElement(
-			'div',
-			{ className: 'tab-panel active', id: 'tab-1' },
-			React.createElement(
-				'nav',
-				null,
-				React.createElement(
-					'a',
-					{ href: '#', className: 'button', id: 'start', onClick: function onClick() {
-							return undefined.start();
-						} },
-					'start'
-				),
-				React.createElement(
-					'a',
-					{ href: '#', className: 'button', id: 'stop', onClick: function onClick() {
-							undefined.stop();
-						} },
-					'stop'
-				),
-				React.createElement(
-					'a',
-					{ href: '#', className: 'button', id: 'clear', onClick: function onClick() {
-							return undefined.clear();
-						} },
-					'Clear'
-				),
-				React.createElement(
-					'a',
-					{ href: '#', className: 'button', id: 'Add', onClick: function onClick() {
-							return undefined.addTime();
-						} },
-					'Add result'
-				),
-				React.createElement(
-					'a',
-					{ href: '#', className: 'button', id: 'clear-results', onClick: function onClick() {
-							return undefined.clearHistory();
-						} },
-					'Clear History'
-				)
-			),
-			React.createElement(Display, { time: undefined.format() })
-		),
-		React.createElement(Results, { history: undefined.state.history, className: 'tab-panel', id: 'tab-2' })
-	);
-};
 
 var Display = function (_React$Component2) {
 	_inherits(Display, _React$Component2);
@@ -193,14 +210,14 @@ var Display = function (_React$Component2) {
 	}
 
 	_createClass(Display, [{
+		key: 'static',
+		value: function _static(propTypes) {
+			time: React.PropTypes.string.isRequired;
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			return React.createElement('div', { className: 'stopWatch' }, this.props.time);
-		}
-	}], [{
-		key: 'propTypes',
-		value: function propTypes() {
-			time: React.PropTypes.string.isRequired;
 		}
 	}]);
 
@@ -217,18 +234,18 @@ var Results = function (_React$Component3) {
 	}
 
 	_createClass(Results, [{
+		key: 'static',
+		value: function _static(propTypes) {
+
+			history: React.PropTypes.array.isRequired;
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var results = this.props.history.map(function (ele) {
 				return React.createElement('li', { key: ele.id }, ele.record);
 			});
 			return React.createElement('ol', { className: 'results' }, React.createElement('p', {}, "Results"), results);
-		}
-	}], [{
-		key: 'propTypes',
-		value: function propTypes() {
-
-			history: React.PropTypes.array.isRequired;
 		}
 	}]);
 
